@@ -23,6 +23,20 @@ const SOLUTIONS = [
   [2, 4, 6]
 ];
 
+window.onload = () => {
+  gameInit();
+}
+
+let cellsClicked = (event) => {
+  let cellsAvailability = addArea(board, event.target.id);
+  if (cellsAvailability) {
+    let result = checkSolution();
+    if (result != false) {
+      setResult(result);
+    }
+  }
+}
+
 let gameInit = () => {
   currWinner = null;
   closeBtn = document.getElementById("close");
@@ -39,20 +53,6 @@ let gameInit = () => {
     board.fill(null);
     cells[cellIndex].addEventListener ("click", cellsClicked, false);
   }
-}
-
-let cellsClicked = (event) => {
-  let cellsAvailability = addArea(event.target.id);
-  if (cellsAvailability) {
-    let result = checkSolution();
-    if (result != false) {
-      setResult(result);
-    }
-  }
-}
-
-window.onload = () => {
-  gameInit();
 }
 
 let closeGameOverMenu = () => {
