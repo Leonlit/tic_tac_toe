@@ -11,10 +11,10 @@ The algorithm for the AI sure is inefficient, I still need sometime to refactor 
 
 ## Credits
 
-- Area add button = http://soundbible.com/419-Tiny-Button-Push.html
-- Buttons clicked button = http://soundbible.com/1705-Click2.html
-- Victory sounds = http://soundbible.com/1003-Ta-Da.html
-- Error Sounds = http://soundbible.com/172-Computer-Error.html
+- Area added sound = http://soundbible.com/419-Tiny-Button-Push.html
+- Buttons clicked sound = http://soundbible.com/1705-Click2.html
+- Victory sound = http://soundbible.com/1003-Ta-Da.html
+- Error sound = http://soundbible.com/172-Computer-Error.html
 
 ## To-do
  - [ ] Refactor the code
