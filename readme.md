@@ -1,4 +1,4 @@
-### A simple Tic Tac Toe Game
+# A simple Tic Tac Toe Game
 note that this game is still under Development
 
 The game consist a simple AI. Play with it a while. 
