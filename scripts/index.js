@@ -28,16 +28,19 @@ window.onload = () => {
 }
 
 let cellsClicked = (event) => {
-  let cellsAvailability = addArea(board, event.target.id);
-  if (cellsAvailability) {
-    let result = checkSolution();
+  let cellAvailable = addArea(board, event.target.id);
+  if (cellAvailable) {
+    let result = checkSolution(board);
     if (result != false) {
       setResult(result);
+    }else if (turn == 0) {
+      setTimeout(computerTurn(board), 1000);
     }
   }
 }
 
 let gameInit = () => {
+  turn = 1;
   currWinner = null;
   closeBtn = document.getElementById("close");
   gameOverMenu= document.getElementById("gameOver")
@@ -80,10 +83,11 @@ let playSound = (soundIndex) => {
 let gameOver = (result) => {
   setTimeout(playSound(0), 900);
   currWinner = result.winner;
-  let winner = ( currWinner == 1)? {team:"Player", scoreId:"playerScore"} : {team:"Computer", scoreId:"enemyScore"};
-  let scorer = document.getElementById(winner.scoreId);
-  scorer.innerHTML = Number(scorer.innerHTML) + 1;
-
+  let winner = ( currWinner == 1)? {team:"Player", scoreId:"playerScore"} : (currWinner == 0)? {team:"Computer", scoreId:"enemyScore"} : {team: "Draw", scoreId: null};
+  if (winner.scoreId != null) {
+    let scorer = document.getElementById(winner.scoreId);
+    scorer.innerHTML = Number(scorer.innerHTML) + 1;
+  }
   shader.style.display = "block";
   gameOverMenu.style.display = "block";
   setTimeout(()=> {
