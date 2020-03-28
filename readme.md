@@ -17,7 +17,7 @@ The algorithm for the AI sure is inefficient, I still need sometime to refactor 
 - Error Sounds = http://soundbible.com/172-Computer-Error.html
 
 ## To-do
- - [] Refactor the code
- - [] Make AI more efficient
- - [] better user interface
- - [] Mobile support
+ - [ ] Refactor the code
+ - [ ] Make AI more efficient
+ - [ ] better user interface
+ - [ ] Mobile support
