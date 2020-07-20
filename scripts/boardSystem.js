@@ -1,39 +1,39 @@
-let checkSolution = (tempBoard) => {
+function checkWinner (tempBoard) {
     let team = (turn == 1) ? PLAYER : AI;
     //changing the plays into a string so that we could use indexOf to check for every element
     //won't miss a win because this will run everytime a new cells filled
     let plays = tempBoard.reduce((accu, curr, index)=> (curr === team)? accu.concat(index): accu, []);
 
+    //flattening the value so that we could search through the string with the solutions array
     for (let [index, win] of SOLUTIONS.entries()) {
       if (win.every(element=> plays.indexOf(element) != -1)) {
-        let result = {winner: turn, winCombos:index};
-        return result;
+        return {winner: turn, winCombos:index};
       }
     }
     
     if (getEmptyCellsSize(tempBoard) == 0) {
       return {winner: 2, winCombos: null};
     }
-
-    turn = (turn == 1) ? 0 : 1;
     return false
 }
 
-let addArea = (newBoard, index)  => {
+//adding a symbol into a tile, reutnr true if succesful, false if otherwise
+function addArea (newBoard, index, symbol) {
   if (currWinner == null) {
-    let symbol;
     if (newBoard[index] == null) {
-      if (trigger) playSound(2);
-      symbol = (turn == 1) ? PLAYER : AI;
+      if (audioTrigger) {
+        playSound(2);
+      }
       newBoard[index] = symbol;
 
-      if (trigger == 1) {
+      if (audioTrigger) {
         let cell = document.getElementById(index);
         cell.innerHTML = symbol;
       }
+
       return true;
     }else {
-      if (trigger) {
+      if (audioTrigger) {
         playSound(3);
       }
       return false;
@@ -41,13 +41,8 @@ let addArea = (newBoard, index)  => {
   }
 }
 
-let setResult = (result) => {
-    for (let i=0; i<cells.length; i++){
-      cells[i].removeEventListener ("click", cellsClicked, false);
-    }
-    setTimeout(function(){
-      boardTable.removeEventListener("click", playSound, false)
-    },300);
+//setting up the menu when a player win or the result is draw
+function setResult (result) {
     setTimeout(gameOver(result), 1500);
     let combos = result.winCombos;
     if (combos != null) {
@@ -60,94 +55,55 @@ let setResult = (result) => {
 
 //using minmax algorithm
 let computerTurn = (newBoard) => {
-  trigger = 0;
-  originalTurn = turn;
-  turn = 1;
-  let scores = [], currScore;
+  audioTrigger = false;
+  let bestScore = -Infinity;
+  let bestRoute;
+  let symbol = AI;
+
   for (let x = 0; x < 9; x++) {
-    currScore = 0;
     let tempBoard = newBoard.slice();
-    let result = addArea(tempBoard, x);
-    if (result != false) {
-      tempBoard = newBoard.slice();
-      let isFull = getEmptyCellsSize(tempBoard);
-      while (isFull> 0) {
-        let res = minimaxRecursion(tempBoard, currScore, x);
-        tempBoard = res.theBoard;
-        currScore += res.score;
-        isFull = getEmptyCellsSize(tempBoard)
+    let result = addArea(tempBoard, x, symbol);
+    if (result) {
+      let score = minimaxAlgo(tempBoard, false);
+      if (score > bestScore) {
+        bestScore = score;
+        bestRoute = x;
       }
-      scores.push({score: currScore, initialPoint: x});
+      console.log(score);
     }
   }
-  
-  console.log(scores)
-  let indexMax = 0, maxValue = scores[0]["score"];
-  for (let x = 0;x< scores.length; x++) {
-    currScore = scores[x]["score"];
-    if (maxValue < currScore) {
-      maxValue = currScore;
-      indexMax = x;
-    }
-  }
-  trigger = 1;
-  turn = originalTurn;
-  addArea(board, scores[indexMax]["initialPoint"]);
-  let result = checkSolution(board);
-  if (result != false) {
+
+  turn = 0;
+  audioTrigger = true;
+  addArea(newBoard, bestRoute, symbol);
+  result = checkWinner(newBoard);
+  if (result !== false ) {
     setResult(result);
   }
 }
 
-let minimaxRecursion = (tempBoard, accu, startingPoint) => {
-  let initialPoint;
-  if (startingPoint != null) {
-    let outerCounter = 0;
-    for (let x = 0; x <= 9;x++) {
-      if (x == 0) {
-        initialPoint = startingPoint;
-      }else initialPoint = outerCounter++;
+let scores = [10, -10, 0];
 
-      if (addArea(tempBoard.slice(), initialPoint)) {
-        
-        let emptyLeft = getEmptyCellsSize(tempBoard);
-        let counter = 0;
-        let index;
-        let innerCounter = 0;
-        let newBoard = tempBoard.slice();
-
-        for (let y = 0; y < 9; y++) {
-          if (y == 0) outerIndex = initialPoint;
-          else outerIndex = innerCounter++;
-
-          let testBoard = newBoard.slice();
-          emptyLeft = getEmptyCellsSize(testBoard);
-          
-          for (let innerLoop = 0; innerLoop < 9; innerLoop++) {
-            if (innerLoop == 0) index = outerIndex;
-            else index = counter++;
-            let cellAvailable = addArea(testBoard, index);
-
-            if (cellAvailable != false) {
-              let result = checkSolution(testBoard);
-              if (result != false) {
-                accu += 1000;
-                break;
-              }
-              //if there's no winner, add score base on current 
-              else if (turn == 1) accu -= 100;
-              else if (turn == 0) accu += 50;
-            }            
-          }
-          addArea(newBoard, outerIndex);
-        }
-        addArea(tempBoard, initialPoint);
-      }
+function minimaxAlgo (tempBoard, isMaximizing) { 
+  let result = checkWinner(tempBoard);
+  if (result != false) {
+    return scores[result.winner];
+  }
+  turn = isMaximizing ? 0 : 1;
+  let bestScore = isMaximizing? -Infinity: Infinity;
+  for (let i = 0; i < 9; i++) {
+      // Is the spot available?
+      let symbol = !isMaximizing? PLAYER : AI;
+      let newBoard = tempBoard.slice();
+      let result = addArea(newBoard, i, symbol);
+      if (result) {
+        let score = minimaxAlgo(newBoard, !isMaximizing, turn);
+        bestScore = (isMaximizing) ? Math.max(score, bestScore) : Math.min(score, bestScore);
     }
   }
-  return {theBoard: tempBoard, score: accu};
- } 
+  return bestScore;
+}
 
- let getEmptyCellsSize = (tempBoard) => {
+function getEmptyCellsSize (tempBoard) {
   return tempBoard.reduce((accu, curr, index)=> (curr === null)? accu.concat(index): accu, []).length;
 }

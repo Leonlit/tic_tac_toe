@@ -1,7 +1,7 @@
 'use strict'
 
 let closeBtn, gameOverMenu, winnerTeam, shader;
-let currWinner = null, trigger = 1;
+let currWinner = null, audioTrigger = true;
 let gameBoard;
 let boardTable = document.getElementsByTagName("table")[0];
 let cells = document.querySelectorAll("td");
@@ -28,18 +28,21 @@ window.onload = () => {
 }
 
 let cellsClicked = (event) => {
-  let cellAvailable = addArea(board, event.target.id);
+  let cellAvailable = addArea(board, event.target.id, PLAYER);
   if (cellAvailable) {
-    let result = checkSolution(board);
+    let result = checkWinner(board);
+    turn = 0;
     if (result != false) {
       setResult(result);
     }else if (turn == 0) {
-      setTimeout(computerTurn(board), 1000);
+      computerTurn(board);
+      turn = 1;
     }
   }
 }
 
 let gameInit = () => {
+  audioTrigger = true;
   turn = 1;
   currWinner = null;
   closeBtn = document.getElementById("close");
