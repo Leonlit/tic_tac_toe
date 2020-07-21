@@ -1,12 +1,11 @@
 # A simple Tic Tac Toe Game
-note that this game is still under Development
 
-The game consist a simple AI. Play with it a while. 
-The algorithm for the AI sure is inefficient, I still need sometime to refactor the code and rethink it's logic.
+A simple tic tac toe game which consists of a bot created using the Minimax algorithm. Play with it for a while and if possible try to beat it ;).
 
 ## Things used for the game :
 
  - HTML, JS, CSS.
+ - Minimax Algorithm.
  - Sounds from soundbible (see credit section).
 
 ## Credits
@@ -18,6 +17,6 @@ The algorithm for the AI sure is inefficient, I still need sometime to refactor 
 
 ## To-do
  - [ ] Refactor the code
- - [ ] Make AI more efficient
+ - [x] Make AI more efficient
  - [ ] better user interface
- - [ ] Mobile support
+ - [x] Mobile support
