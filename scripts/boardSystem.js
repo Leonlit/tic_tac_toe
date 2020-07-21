@@ -69,7 +69,6 @@ let computerTurn = (newBoard) => {
         bestScore = score;
         bestRoute = x;
       }
-      console.log(score);
     }
   }
 

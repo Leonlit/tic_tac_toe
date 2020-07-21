@@ -6,21 +6,21 @@
     <meta name="description" content="A simple tic tac toe game using JS, HTML and CSS">
     <meta name="author" content="Leonlit">
     <meta name="keywords" content="HTML, CSS, JS, Browser-game, tic-tac-toe, leonlit">
-    <link rel="stylesheet" href="css/desktop.css?10000"/>
-    <title>Simple Tic Tac Toe</title>
+    <link rel="stylesheet" href="css/mobile.css"/>
+    <link rel="stylesheet" href="css/tablet.css"/>
+    <link rel="stylesheet" href="css/desktop.css"/>
+    <title>Tic Tac Toe - by leonlit</title>
   </head>
   <body>
     <div id="scoreBoard">
       <label>Player</label>
-      <br/>
-      <div id="playerScore">0</div>
-      <hr/>
-      <div id="enemyScore">0</div>
-      <br/>
+      <span id="playerScore">0</span>
+      
       <label>Computer</label>
+      <span id="enemyScore">0</span>
     </div>
 
-    <div id="restart" onclick="gameInit();playSound(1);">Clear</div>
+    <span id="restart" onclick="gameInit();playSound(1);">Clear</span>
     <div></div>
 
     <table class="gameBoard center_FixedContAndText">
@@ -38,10 +38,10 @@
         <td id="6"></td>
         <td id="7"></td>
         <td id="8"></td>
-        <div id="shader"></div>
-        <div class="center_FixedContAndText" id="gameOver"><div id="close" onclick="playSound(1)">&#10006;</div><div class="center_FixedContAndText">The match result is :<br><br><span id="winTeam"></span></div></div>
       </tr>
     </table>
+    <div id="shader"></div>
+    <div class="center_FixedContAndText" id="gameOver"><div id="close" onclick="playSound(1)">&#10006;</div><div class="center_FixedContAndText">The match result is :<br><br><span id="winTeam"></span></div></div>
   </body>
 </html>
 
