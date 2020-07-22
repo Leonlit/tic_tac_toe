@@ -11,6 +11,7 @@ function checkWinner (tempBoard) {
       }
     }
     
+    //if there's no winner and the remaining empty cell is zero, its a draw so return 2.
     if (getEmptyCellsSize(tempBoard) == 0) {
       return {winner: 2, winCombos: null};
     }
@@ -96,7 +97,7 @@ function minimaxAlgo (tempBoard, isMaximizing) {
       let newBoard = tempBoard.slice();
       let result = addArea(newBoard, i, symbol);
       if (result) {
-        let score = minimaxAlgo(newBoard, !isMaximizing, turn);
+        let score = minimaxAlgo(newBoard, !isMaximizing);
         bestScore = (isMaximizing) ? Math.max(score, bestScore) : Math.min(score, bestScore);
     }
   }

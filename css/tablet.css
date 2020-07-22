@@ -5,12 +5,8 @@
     }
 
     .gameBoard tr td{
-        border:5px solid white;
         width:150px;
         height:150px;
-        -webkit-tap-highlight-color: transparent;
-        border-radius:30px;
-        text-shadow:0px 0px 2px black;
     }
 
     #gameOver {

@@ -1,7 +1,9 @@
 'use strict'
 
 let closeBtn, gameOverMenu, winnerTeam, shader;
-let currWinner = null, audioTrigger = true;
+let currWinner = null, audioTrigger = true; //audio trigger is used to disabled sound when AI is finding the best
+                                            //cell. As the sound is played whenever a cell is added with a symbol
+                                            //true means the sound now could be played and mute otherwise.
 let gameBoard;
 let boardTable = document.getElementsByTagName("table")[0];
 let cells = document.querySelectorAll("td");
@@ -27,6 +29,15 @@ window.onload = () => {
   gameInit();
 }
 
+//note: 
+//  turn == 0 means computer's turn
+//  turn == 1 means player's turn
+
+//whenever user clicked the cell in the table element, check for cell availablility
+//as well as produce the correct sound if audioTrigger is on. 
+//If the cell is available, add the current player symbol into the cell and then change turn to 0.
+//checkWinner() function would be called so that we can check if the player has won the game
+//
 let cellsClicked = (event) => {
   let cellAvailable = addArea(board, event.target.id, PLAYER);
   if (cellAvailable) {
@@ -86,7 +97,7 @@ let playSound = (soundIndex) => {
 let gameOver = (result) => {
   setTimeout(playSound(0), 900);
   currWinner = result.winner;
-  let winner = ( currWinner == 1)? {team:"Player", scoreId:"playerScore"} : (currWinner == 0)? {team:"Computer", scoreId:"enemyScore"} : {team: "Draw", scoreId: null};
+  let winner = ( currWinner == 1) ? {team:"Player", scoreId:"playerScore"} : (currWinner == 0)? {team:"Computer", scoreId:"enemyScore"} : {team: "Draw", scoreId: null};
   if (winner.scoreId != null) {
     let scorer = document.getElementById(winner.scoreId);
     scorer.innerHTML = Number(scorer.innerHTML) + 1;

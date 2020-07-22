@@ -17,7 +17,8 @@
   }
 
   #scoreBoard {
-    float:left;
+    left:5%;
+    width:auto;
     top:50%;
     margin-left:1%;
     transform:translateY(-50%);
