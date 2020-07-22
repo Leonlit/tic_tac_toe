@@ -1,7 +1,7 @@
 'use strict'
 
 let closeBtn, gameOverMenu, winnerTeam, shader;
-let currWinner = null, audioTrigger = true; //audio trigger is used to disabled sound when AI is finding the best
+let currWinner = null, audioTrigger; //audio trigger is used to disabled sound when AI is finding the best
                                             //cell. As the sound is played whenever a cell is added with a symbol
                                             //true means the sound now could be played and mute otherwise.
 let gameBoard;
@@ -11,8 +11,8 @@ let restartBtn = document.getElementById("restart");
 
 const PLAYER="O",  AI="X";
 
-let board = new Array(9);
-let turn = 1;
+let board;
+let turn;
 
 const SOLUTIONS = [
   [0, 1, 2],
@@ -26,6 +26,7 @@ const SOLUTIONS = [
 ];
 
 window.onload = () => {
+  turn = 0;
   gameInit();
 }
 
@@ -53,13 +54,21 @@ let cellsClicked = (event) => {
 }
 
 let gameInit = () => {
-  audioTrigger = true;
-  turn = 1;
   currWinner = null;
+  board = new Array(9);
+  audioTrigger = true;
+
   closeBtn = document.getElementById("close");
   gameOverMenu= document.getElementById("gameOver")
   winnerTeam = document.getElementById("winTeam")
   shader = document.getElementById("shader");
+
+  if (turn == 0) {
+    setTimeout(()=>{
+      randomMove(board);
+    }, 500);
+    turn = 1;
+  }
 
   closeBtn.addEventListener("click", closeGameOverMenu, false);
   restartBtn.style.display="none";

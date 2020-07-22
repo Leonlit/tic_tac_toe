@@ -60,12 +60,11 @@ let computerTurn = (newBoard) => {
   let bestScore = -Infinity;
   let bestRoute;
   let symbol = AI;
-
   for (let x = 0; x < 9; x++) {
     let tempBoard = newBoard.slice();
     let result = addArea(tempBoard, x, symbol);
     if (result) {
-      let score = minimaxAlgo(tempBoard, false);
+      let score = minimaxAlgo(tempBoard, false, 0);
       if (score > bestScore) {
         bestScore = score;
         bestRoute = x;
@@ -84,24 +83,38 @@ let computerTurn = (newBoard) => {
 
 let scores = [10, -10, 0];
 
-function minimaxAlgo (tempBoard, isMaximizing) { 
+function minimaxAlgo (tempBoard, isMaximizing, depth) { 
   let result = checkWinner(tempBoard);
   if (result != false) {
-    return scores[result.winner];
+    if (isMaximizing) {
+      return scores[result.winner] + depth;
+    }else {
+      return scores[result.winner] - depth;
+    }
   }
   turn = isMaximizing ? 0 : 1;
   let bestScore = isMaximizing? -Infinity: Infinity;
   for (let i = 0; i < 9; i++) {
       // Is the spot available?
-      let symbol = !isMaximizing? PLAYER : AI;
+      let symbol = isMaximizing ? AI : PLAYER;
       let newBoard = tempBoard.slice();
       let result = addArea(newBoard, i, symbol);
       if (result) {
-        let score = minimaxAlgo(newBoard, !isMaximizing);
+        let score = minimaxAlgo(newBoard, !isMaximizing, depth + 1);
         bestScore = (isMaximizing) ? Math.max(score, bestScore) : Math.min(score, bestScore);
     }
   }
   return bestScore;
+}
+
+function randomMove (theBoard) {
+  let position = Math.floor(Math.random() * 10);
+  console.log(position);
+  let test = document.getElementById(position);
+  test.innerHTML = AI;
+  console.log(test);
+  theBoard[position] = AI;
+  console.log(theBoard)
 }
 
 function getEmptyCellsSize (tempBoard) {
