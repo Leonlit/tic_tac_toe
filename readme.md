@@ -20,3 +20,9 @@ A simple tic tac toe game which consists of a bot created using the Minimax algo
  - [x] Make AI more efficient
  - [ ] better user interface
  - [x] Mobile support
+
+## Contact
+If you have any question regarding the project, feel free to contact me.
+### [leonlit](https://github.com/Leonlit) :
+ - [twitter](https://twitter.com/leonlit)
+ - [email](leonlit123@gmail.com)
