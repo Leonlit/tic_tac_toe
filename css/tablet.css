@@ -25,5 +25,9 @@
     #scoreBoard span {
         font-size:3em;
     }
+        
+    footer {
+        font-size: 1.6em;
+    }
 
 }
