@@ -2,6 +2,9 @@
 
 A simple tic tac toe game which consists of a bot created using the Minimax algorithm. Play with it for a while and if possible try to beat it ;).
 
+## In-game imge
+![Image on the gameplay of the game](https://github.com/Leonlit/tic_tac_toe/blob/master/img/gameplay.PNG?raw=true)
+
 ## Things used for the game :
 
  - HTML, JS, CSS.
