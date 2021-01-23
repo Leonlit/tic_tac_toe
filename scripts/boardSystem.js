@@ -60,21 +60,28 @@ let computerTurn = (newBoard) => {
   let bestScore = -Infinity;
   let bestRoute;
   let symbol = AI;
+  //initial loop for possible moves
   for (let x = 0; x < 9; x++) {
+    //used slice so that the original board will not be affected
     let tempBoard = newBoard.slice();
+    //try adding to a cell
     let result = addArea(tempBoard, x, symbol);
+    //if the insertion is successful, continue with the recursion (to calculate the other node score)
     if (result) {
       let score = minimaxAlgo(tempBoard, false, 0);
+      //then check if the score is better than the previous score
       if (score > bestScore) {
         bestScore = score;
-        bestRoute = x;
+        bestRoute = x; //replace the best position location
       }
     }
   }
 
   turn = 0;
   audioTrigger = true;
+  //modifying the original board
   addArea(newBoard, bestRoute, symbol);
+  //then check winner
   result = checkWinner(newBoard);
   if (result !== false ) {
     setResult(result);
@@ -83,7 +90,7 @@ let computerTurn = (newBoard) => {
 
 let scores = [10, -10, 0];
 
-function minimaxAlgo (tempBoard, isMaximizing, depth) { 
+function minimaxAlgo (tempBoard, isMaximizing, depth) {
   let result = checkWinner(tempBoard);
   if (result != false) {
     if (isMaximizing) {
@@ -94,6 +101,7 @@ function minimaxAlgo (tempBoard, isMaximizing, depth) {
   }
   turn = isMaximizing ? 0 : 1;
   let bestScore = isMaximizing? -Infinity: Infinity;
+  //looping through the possible moves
   for (let i = 0; i < 9; i++) {
       // Is the spot available?
       let symbol = isMaximizing ? AI : PLAYER;

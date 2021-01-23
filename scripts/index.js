@@ -4,7 +4,6 @@ let closeBtn, gameOverMenu, winnerTeam, shader;
 let currWinner = null, audioTrigger; //audio trigger is used to disabled sound when AI is finding the best
                                             //cell. As the sound is played whenever a cell is added with a symbol
                                             //true means the sound now could be played and mute otherwise.
-let gameBoard;
 let boardTable = document.getElementsByTagName("table")[0];
 let cells = document.querySelectorAll("td");
 let restartBtn = document.getElementById("restart");
@@ -63,6 +62,7 @@ let gameInit = () => {
   winnerTeam = document.getElementById("winTeam")
   shader = document.getElementById("shader");
 
+  //initial page load, the AI will perform the first move (random)
   if (turn == 0) {
     setTimeout(()=>{
       randomMove(board);
