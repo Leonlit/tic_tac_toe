@@ -92,11 +92,12 @@ let scores = [10, -10, 0];
 
 function minimaxAlgo (tempBoard, isMaximizing, depth) {
   let result = checkWinner(tempBoard);
+  //if one player has already won, return the score (based on the depth and min or maximizing player)
   if (result != false) {
     if (isMaximizing) {
-      return scores[result.winner] + depth;
-    }else {
       return scores[result.winner] - depth;
+    }else {
+      return scores[result.winner] + depth;
     }
   }
   turn = isMaximizing ? 0 : 1;
@@ -108,6 +109,8 @@ function minimaxAlgo (tempBoard, isMaximizing, depth) {
       let newBoard = tempBoard.slice();
       let result = addArea(newBoard, i, symbol);
       if (result) {
+        //recursion again, while determining the current level's best route's score
+        //if the score for this level is the highest,  AI will take this route
         let score = minimaxAlgo(newBoard, !isMaximizing, depth + 1);
         bestScore = (isMaximizing) ? Math.max(score, bestScore) : Math.min(score, bestScore);
     }
