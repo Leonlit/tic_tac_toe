@@ -55,6 +55,7 @@ let cellsClicked = (event) => {
 let gameInit = () => {
   currWinner = null;
   board = new Array(9);
+  
   audioTrigger = true;
 
   closeBtn = document.getElementById("close");

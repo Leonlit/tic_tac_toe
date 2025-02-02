@@ -18,14 +18,25 @@ function checkWinner (tempBoard) {
     return false
 }
 
+function isCellEmpty (theBoard, index) {
+  if (theBoard[index] == null) {
+    return true
+  }
+  return false
+}
+
+function addToArrayIndex(arr, idx, value) {
+  arr[idx] = value;
+}
+
 //adding a symbol into a tile, reutnr true if succesful, false if otherwise
 function addArea (newBoard, index, symbol) {
   if (currWinner == null) {
-    if (newBoard[index] == null) {
+    if (isCellEmpty(newBoard, index)) {
       if (audioTrigger) {
         playSound(2);
       }
-      newBoard[index] = symbol;
+      addToArrayIndex(newBoard, index, symbol)
 
       if (audioTrigger) {
         let cell = document.getElementById(index);
@@ -58,22 +69,21 @@ function setResult (result) {
 let computerTurn = (newBoard) => {
   audioTrigger = false;
   let bestScore = -Infinity;
-  let bestRoute;
+  let bestRoute = -1;
   let symbol = AI;
-  //initial loop for possible moves
-  for (let x = 0; x < 9; x++) {
-    //used slice so that the original board will not be affected
-    let tempBoard = newBoard.slice();
-    //try adding to a cell
-    let result = addArea(tempBoard, x, symbol);
-    //if the insertion is successful, continue with the recursion (to calculate the other node score)
-    if (result) {
-      let score = minimaxAlgo(tempBoard, false, 0);
-      //then check if the score is better than the previous score
-      if (score > bestScore) {
-        bestScore = score;
-        bestRoute = x; //replace the best position location
-      }
+  let tempBoard = newBoard.slice();
+  for (let i = 0; i < 9; i++) {
+    if (!isCellEmpty(tempBoard, i)) {
+      continue;
+    }
+    addToArrayIndex(tempBoard, i, symbol)
+    turn = 1
+    let score = minimaxAlgo(tempBoard, false);
+    console.log(score);
+    
+    if (score > bestScore) {
+      bestScore = score;
+      bestRoute = i; //replace the best position location
     }
   }
 
@@ -90,42 +100,36 @@ let computerTurn = (newBoard) => {
 
 let scores = [10, -10, 0];
 
-function minimaxAlgo (tempBoard, isMaximizing, depth) {
+function minimaxAlgo (tempBoard, isMaximizing) {
   let result = checkWinner(tempBoard);
-  //if one player has already won, return the score (based on the depth and min or maximizing player)
   if (result != false) {
-    if (isMaximizing) {
-      return scores[result.winner] - depth;
-    }else {
-      return scores[result.winner] + depth;
-    }
+    return scores[result.winner];
   }
+
   turn = isMaximizing ? 0 : 1;
   let bestScore = isMaximizing? -Infinity: Infinity;
   //looping through the possible moves
   for (let i = 0; i < 9; i++) {
-      // Is the spot available?
-      let symbol = isMaximizing ? AI : PLAYER;
-      let newBoard = tempBoard.slice();
-      let result = addArea(newBoard, i, symbol);
-      if (result) {
-        //recursion again, while determining the current level's best route's score
-        //if the score for this level is the highest,  AI will take this route
-        let score = minimaxAlgo(newBoard, !isMaximizing, depth + 1);
-        bestScore = (isMaximizing) ? Math.max(score, bestScore) : Math.min(score, bestScore);
+    // Is the spot available?
+    let symbol = isMaximizing ?  AI : PLAYER;
+    let newBoard = tempBoard.slice();
+    if (!isCellEmpty(newBoard, i)) {
+      continue;
     }
+    addToArrayIndex(newBoard, i, symbol)
+    //recursion again, while determining the current level's best route's score
+    //if the score for this level is the highest,  AI will take this route
+    let score = minimaxAlgo(newBoard, !isMaximizing);
+    bestScore = (isMaximizing) ? Math.max(score, bestScore) : Math.min(score, bestScore);
   }
   return bestScore;
 }
 
 function randomMove (theBoard) {
   let position = Math.floor(Math.random() * 10);
-  console.log(position);
   let test = document.getElementById(position);
   test.innerHTML = AI;
-  console.log(test);
   theBoard[position] = AI;
-  console.log(theBoard)
 }
 
 function getEmptyCellsSize (tempBoard) {
