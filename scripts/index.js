@@ -1,7 +1,7 @@
 'use strict'
 
-let closeBtn, gameOverMenu, winnerTeam, shader;
-let currWinner = null, audioTrigger; //audio trigger is used to disabled sound when AI is finding the best
+let closeBtn, winnerTeam, shader;
+let currWinner = null //audio trigger is used to disabled sound when AI is finding the best
 //cell. As the sound is played whenever a cell is added with a symbol
 //true means the sound now could be played and mute otherwise.
 let boardTable = document.getElementsByTagName("table")[0];
@@ -24,9 +24,15 @@ const SOLUTIONS = [
 	[2, 4, 6]
 ];
 
-window.onload = () => {
+function startGame (){
 	turn = 0;
 	gameInit();
+	hideGameStart()
+}
+
+function hideGameStart() {
+	const gameStart = document.getElementById("gameStart")
+	gameStart.style.display = "none";
 }
 
 //note: 
@@ -34,7 +40,7 @@ window.onload = () => {
 //  turn == 1 means player's turn
 
 //whenever user clicked the cell in the table element, check for cell availablility
-//as well as produce the correct sound if audioTrigger is on. 
+//as well as produce the correct sound
 //If the cell is available, add the current player symbol into the cell and then change turn to 0.
 //checkWinner() function would be called so that we can check if the player has won the game
 //
@@ -46,8 +52,11 @@ let cellsClicked = (event) => {
 		if (result != false) {
 			setResult(result);
 		} else if (turn == 0) {
-			computerTurn(board);
-			turn = 1;
+			setTimeout(() => {
+				computerTurn(board)
+				turn = 1
+			}, 500)
+
 		}
 	}
 }
@@ -56,10 +65,7 @@ let gameInit = () => {
 	currWinner = null;
 	board = new Array(9);
 
-	audioTrigger = true;
-
 	closeBtn = document.getElementById("close");
-	gameOverMenu = document.getElementById("gameOver")
 	winnerTeam = document.getElementById("winTeam")
 	shader = document.getElementById("shader");
 
@@ -71,7 +77,9 @@ let gameInit = () => {
 		turn = 1;
 	}
 
-	closeBtn.addEventListener("click", closeGameOverMenu, false);
+	closeBtn.addEventListener("click", ()=> {
+		closeGameOverMenu(document.getElementById("gameOver"))
+	}, false);
 	restartBtn.style.display = "none";
 
 	for (let cellIndex = 0; cellIndex < cells.length; cellIndex++) {
@@ -82,20 +90,20 @@ let gameInit = () => {
 	}
 }
 
-let closeGameOverMenu = () => {
+let closeGameOverMenu = (ele) => {
 	//used opacity to animate the fade in, while display none to prevent user from able to click the
 	//game over menu or selecting it (which would cause the app to not so user friend)
 	shader.style.opacity = "0";
-	gameOverMenu.style.opacity = "0";
+	ele.style.opacity = "0";
 
 	setTimeout(() => {
 		shader.style.display = "none"
-		gameOverMenu.style.display = "none";
+		ele.style.display = "none";
 	}, 300);
 }
 
 //playing sound effects
-// 0 = win, 1 = button click, 2 = add points
+// 0 = win, 1 = button click, 2 = add area, 3 = wrong option
 let playSound = (soundIndex) => {
 	let musicArr = ["win", "click", "areaAdded", "error"];
 	if (Number.isInteger(soundIndex) != true) soundIndex = 2;
@@ -112,6 +120,7 @@ let gameOver = (result) => {
 		let scorer = document.getElementById(winner.scoreId);
 		scorer.innerHTML = Number(scorer.innerHTML) + 1;
 	}
+	const gameOverMenu = document.getElementById("gameOver")
 	shader.style.display = "block";
 	gameOverMenu.style.display = "block";
 	setTimeout(() => {

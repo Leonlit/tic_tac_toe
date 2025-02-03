@@ -9,7 +9,8 @@
         height:150px;
     }
 
-    #gameOver {
+    #gameOver,
+    #gameStart {
         width:70%;
         height:25%;
     }

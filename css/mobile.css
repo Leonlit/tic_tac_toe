@@ -48,7 +48,7 @@ body {
     border-bottom: none;
 }
 
-#gameOver {
+#gameOver{
     display: none;
     width:80%;
     height:35%;
@@ -61,6 +61,32 @@ body {
     text-shadow:0px 0px 5px grey;
     transition: opacity 0.3s ;
     opacity:0;
+}
+
+#gameStart {
+    width:80%;
+    height:35%;
+    background-color:lightblue;
+    border-radius:10px;
+    font-size:1.5em;
+    z-index:10;
+    font-family:Georgia;
+    box-shadow: 0px 0px 10px grey;
+    text-shadow:0px 0px 5px grey;
+    transition: opacity 0.3s ;
+}
+
+#gameStart span {
+    padding: 5%;
+    border-radius:10px;
+    box-shadow: 0px 0px 10px grey;
+    text-shadow:0px 0px 5px grey;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+#gameStart span:hover {
+    border: 1px solid grey;
 }
 
 #gameOver span {
@@ -103,6 +129,14 @@ body {
 }
 
 .center_FixedContAndText {
+    position: fixed;
+    text-align:center;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+.top_FixedContAndText {
     position: fixed;
     text-align:center;
     top:50%;
